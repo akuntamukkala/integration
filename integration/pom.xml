@@ -53,6 +53,6 @@
 	<modules>
 		<module>parent-pom</module>
 		<module>configuration</module>
-		<module>route-jms2rest</module>
+		<module>feature</module>
 	</modules>
 </project>
