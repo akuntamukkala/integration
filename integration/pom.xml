@@ -1,0 +1,58 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.vpn</groupId>
+  <artifactId>integration-root</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <name>integration-root</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <integration.scm.git.repo.root.path>/integration</integration.scm.git.repo.root.path>
+  </properties>
+
+	<distributionManagement>
+    	<repository>
+      		<id>repo.internal</id>
+      		<name>Internal Release Repository</name>
+      		<url>https://repository-akuntamukkala.forge.cloudbees.com/release</url>
+    	</repository>
+    	<snapshotRepository>
+      		<id>repo.snapshots</id>
+      		<name>Internal Snapshot Repository</name>
+      		<url>https://repository-akuntamukkala.forge.cloudbees.com/snapshot</url>
+    	</snapshotRepository>
+  	</distributionManagement>
+
+  
+  <scm>
+  	<connection>scm:git:git@github.com:akuntamukkala/integration.git${integration.scm.git.repo.root.path}</connection>
+  	<url>https://github.com/akuntamukkala/integration.git</url>
+  	<developerConnection>scm:git:git@github.com:akuntamukkala/integration.git${integration.scm.git.repo.root.path}</developerConnection>
+  </scm>
+  
+  <build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<goals>deploy</goals>
+					<pushChanges>false</pushChanges>
+					<localCheckout>true</localCheckout>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	
+	<modules>
+		<module>parent-pom</module>
+		<module>configuration</module>
+		<module>route-jms2rest</module>
+	</modules>
+</project>
