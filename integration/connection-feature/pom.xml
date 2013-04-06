@@ -21,9 +21,9 @@
 		<relativePath>../parent-pom/pom.xml</relativePath>
 	</parent>
 
-	<artifactId>integration-feature</artifactId>
+	<artifactId>integration-connection-feature</artifactId>
 	<packaging>pom</packaging>
-	<name>integration-feature feature</name>
+	<name>integration-connection-feature</name>
 
 	<dependencies>
 		<!-- Put here the artifacts which should be included in the feature -->
@@ -65,7 +65,7 @@
 								<artifact>
 									<file>target/classes/features.xml</file>
 									<type>xml</type>
-								</artifact>					
+								</artifact>							
 							</artifacts>
 						</configuration>
 					</execution>
@@ -74,6 +74,11 @@
 		</plugins>
 	</build>
 
+	<!-- <build> <plugins> <plugin> <groupId>org.apache.karaf.tooling</groupId> 
+		<artifactId>features-maven-plugin</artifactId> <version>2.3.1</version> <executions> 
+		<execution> <id>generate-features-file</id> <goals> <goal>generate-features-file</goal> 
+		</goals> <configuration> <karafVersion>2.3.1</karafVersion> </configuration> 
+		</execution> </executions> </plugin> </plugins> </build> -->
 
-	<description>This is the main feature that ties in the configuration feature and connection factory feature. </description>
+	<description>This feature provides the bundle which exposes an ActiveMQ pooled connection factory bean</description>
 </project>

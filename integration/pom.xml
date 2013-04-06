@@ -52,7 +52,9 @@
 	
 	<modules>
 		<module>parent-pom</module>
-		<module>configuration</module>
+		<module>configuration-feature</module>
+		<module>connection</module>
+		<module>connection-feature</module>
 		<module>feature</module>
 	</modules>
 </project>

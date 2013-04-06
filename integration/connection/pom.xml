@@ -27,11 +27,11 @@
 		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>../parent-pom/pom.xml</relativePath>
 	</parent>
-	<artifactId>integration-configuration</artifactId>
+	<artifactId>integration-connection</artifactId>
     <packaging>bundle</packaging>
 
-    <name>Configuration Bundle</name>
-    <description>configuration OSGi blueprint bundle project.</description>
+    <name>integration-connection</name>
+    <description>This bundle create a pooled connection factory bean (for ActiveMQ) with configurable pool size</description>
 
 
 

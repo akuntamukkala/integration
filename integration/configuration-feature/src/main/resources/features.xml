@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features xmlns="http://karaf.apache.org/xmlns/features/v1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://karaf.apache.org/xmlns/features/v1.0.0 http://karaf.apache.org/xmlns/features/v1.0.0">
+
+	<feature name="integration-configuration-feature" version="${pom.version}">
+		<configfile finalname="/etc/IntegrationConfigSettingsDEV.cfg">mvn:com.vpn/integration-configuration-feature/${pom.version}/cfg-dev</configfile>
+		<configfile finalname="/etc/IntegrationConfigSettingsSIT.cfg">mvn:com.vpn/integration-configuration-feature/${pom.version}/cfg-sit</configfile>
+		<configfile finalname="/etc/IntegrationConfigSettingsPROD.cfg">mvn:com.vpn/integration-configuration-feature/${pom.version}/cfg-prod</configfile>
+	</feature>
+</features>

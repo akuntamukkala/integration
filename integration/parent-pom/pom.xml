@@ -6,7 +6,7 @@
 	<groupId>com.vpn</groupId>
 	<artifactId>integration-parent-pom</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Integration: Paret POM</name>
+	<name>Integration: Parent POM</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -32,4 +32,5 @@
 	</dependencies>
 	
 	<packaging>pom</packaging>
+	<description>This is a place holder parent pom which may be used to specify dependencies, plugin etc</description>
 </project>

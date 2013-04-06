@@ -21,9 +21,10 @@
 		<relativePath>../parent-pom/pom.xml</relativePath>
 	</parent>
 
-	<artifactId>integration-feature</artifactId>
+	<artifactId>integration-configuration-feature</artifactId>
 	<packaging>pom</packaging>
-	<name>integration-feature feature</name>
+	<name>integration-configuration-feature</name>
+	<description>This feature defines the different sets of configuration for DEV, SIT and PROD environments</description>
 
 	<dependencies>
 		<!-- Put here the artifacts which should be included in the feature -->
@@ -65,7 +66,19 @@
 								<artifact>
 									<file>target/classes/features.xml</file>
 									<type>xml</type>
-								</artifact>					
+								</artifact>
+								<artifact>
+									<file>target/classes/IntegrationConfigSettingsDEV.cfg</file>
+									<type>cfg-dev</type>
+								</artifact>
+								<artifact>
+									<file>target/classes/IntegrationConfigSettingsSIT.cfg</file>
+									<type>cfg-sit</type>
+								</artifact>
+								<artifact>
+									<file>target/classes/IntegrationConfigSettingsPROD.cfg</file>
+									<type>cfg-prod</type>
+								</artifact>								
 							</artifacts>
 						</configuration>
 					</execution>
@@ -74,6 +87,10 @@
 		</plugins>
 	</build>
 
+	<!-- <build> <plugins> <plugin> <groupId>org.apache.karaf.tooling</groupId> 
+		<artifactId>features-maven-plugin</artifactId> <version>2.3.1</version> <executions> 
+		<execution> <id>generate-features-file</id> <goals> <goal>generate-features-file</goal> 
+		</goals> <configuration> <karafVersion>2.3.1</karafVersion> </configuration> 
+		</execution> </executions> </plugin> </plugins> </build> -->
 
-	<description>This is the main feature that ties in the configuration feature and connection factory feature. </description>
 </project>
