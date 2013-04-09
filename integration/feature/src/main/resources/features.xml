@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- <features xmlns="http://karaf.apache.org/xmlns/features/v1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://karaf.apache.org/xmlns/features/v1.0.0 http://karaf.apache.org/xmlns/features/v1.0.0"> -->
-<features>
+<features name="integration-feature-${pom.version}">
+
+	<repository>mvn:com.vpn/integration-connection-feature/0.0.1-SNAPSHOT/xml</repository>
+	<repository>mvn:com.vpn/integration-configuration-feature/0.0.1-SNAPSHOT/xml</repository>
 
 	<feature name="integration-feature" version="${pom.version}">
-
-		<feature version="${pom.version}" start-level="10">integration-configuration-feature</feature>
-
-		<feature version="${pom.version}" start-level="20">integration-connection-feature</feature>
-
+		<feature name="integration-configuration-feature" version="${pom.version}" >integration-configuration-feature</feature>			
+		<feature name="integration-connection-feature" version="${pom.version}" >integration-connection-feature</feature>
 	</feature>
 
 

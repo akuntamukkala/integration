@@ -20,6 +20,10 @@
 		
 	<cm:property-placeholder persistent-id="IntegrationConfigSettings$[runtime.environment]"
 		update-strategy="reload">
+		<cm:default-properties>
+			<cm:property name="broker.url" value="tcp://localhost:9999"/>
+			<cm:property name="broker.connection.factory.pool.size" value="1"/>
+		</cm:default-properties>
 	</cm:property-placeholder>
 
 	<bean id="activemqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
