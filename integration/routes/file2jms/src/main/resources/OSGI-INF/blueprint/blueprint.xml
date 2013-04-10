@@ -13,6 +13,7 @@
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camel="http://camel.apache.org/schema/blueprint"
 	xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
+	xmlns:ext="http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.1.0"
 	xsi:schemaLocation="
        http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
          http://www.osgi.org/xmlns/blueprint-ext/v1.1.0 https://svn.apache.org/repos/asf/aries/tags/blueprint-0.3.1/blueprint-core/src/main/resources/org/apache/aries/blueprint/ext/blueprint-ext.xsd  
@@ -21,42 +22,46 @@
   http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd
        http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/spring/camel-blueprint.xsd">
 
-	
-		<!-- Allow the use of system properties -->
+
+	<!-- Allow the use of system properties -->
 	<ext:property-placeholder placeholder-prefix="$["
 		placeholder-suffix="]" />
-		
-	<cm:property-placeholder persistent-id="IntegrationConfigSettings$[runtime.environment]"
+
+	<cm:property-placeholder
+		persistent-id="IntegrationConfigSettings$[runtime.environment]"
 		update-strategy="reload">
 		<cm:default-properties>
-			<cm:property name="incoming.file.directory" value="${user.dir}"/>
+			<cm:property name="incoming.file.directory" value="${user.dir}" />
 		</cm:default-properties>
 	</cm:property-placeholder>
-	
-	
+
+
 	<!-- This bean defines the routes -->
-	<bean id="routeBuilder" class="com.vpn.integration.route.IntegrationRouteBuilder">
-		<property name="incomingFileDirectory" value="${incoming.file.directory}"/>
+	<bean id="file2JMSRouteBuilder" class="com.vpn.integration.route.FileToJMSRouteBuilder">
+		<property name="incomingFileDirectory" value="${incoming.file.directory}" />
 	</bean>
 
-	<!-- This bean refers to the connection factory bean exposed by another bundle 
-		in an osgi container 
-	-->
-    <reference id="connectionFactory" interface="javax.jms.ConnectionFactory" />
-    
-    
-    <bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
-        <property name="connectionFactory" ref="connectionFactory"/>
-    </bean>
-    
-    <bean id="jms" class="org.apache.camel.component.jms.JmsComponent">
-        <argument ref="jmsConfig"/>
-    </bean>
-    
-    <!-- This is the camel context in this route builder creates the route -->
+	<bean id="jmsToSplitterToCBRRouteBuilder" class="com.vpn.integration.route.JMSToSplitterToCBRRouteBuilder">
+		
+	</bean>
+	<!-- This bean refers to the connection factory bean exposed by another 
+		bundle in an osgi container -->
+	<reference id="connectionFactory" interface="javax.jms.ConnectionFactory" />
+
+
+	<bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
+		<property name="connectionFactory" ref="connectionFactory" />
+	</bean>
+
+	<bean id="jms" class="org.apache.camel.component.jms.JmsComponent">
+		<argument ref="jmsConfig" />
+	</bean>
+
+	<!-- This is the camel context in this route builder creates the route -->
 	<camelContext id="file2jms"
 		xmlns="http://camel.apache.org/schema/blueprint" autoStartup="true">
-		<routeBuilder ref="routeBuilder" />
+		<routeBuilder ref="file2JMSRouteBuilder" />
+		<routeBuilder ref="jmsToSplitterToCBRRouteBuilder"/>
 	</camelContext>
 
 </blueprint>

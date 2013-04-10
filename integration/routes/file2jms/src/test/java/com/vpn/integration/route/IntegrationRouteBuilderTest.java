@@ -1,6 +1,8 @@
 package com.vpn.integration.route;
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
@@ -34,7 +36,7 @@ public class IntegrationRouteBuilderTest extends CamelTestSupport {
 	@Rule
 	public TemporaryFolder folder = new TemporaryFolder();
 
-	private ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(//"tcp://localhost:61636");
+	private ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
 			"vm://test-broker?broker.persistent=false");
 	@Before
 	@Override
@@ -44,7 +46,7 @@ public class IntegrationRouteBuilderTest extends CamelTestSupport {
 	}
 	
 	@Test
-	public void testFile2JMSRoute() throws InterruptedException, JMSException {
+	public void testFile2JMSRoute() throws InterruptedException, JMSException, IOException {
 		
         // Create a Connection
         Connection connection = connectionFactory.createConnection();
@@ -62,15 +64,16 @@ public class IntegrationRouteBuilderTest extends CamelTestSupport {
 
         // Wait for a message
         Message message = consumer.receive(2000);
-
+        Assert.assertEquals("rfqId header on the JMS message not the same as //rfq/id", "123456", message.getStringProperty("rfqId"));
         Assert.assertNotNull(message);
+        
         
         if (message instanceof TextMessage) {
             TextMessage textMessage = (TextMessage) message;
             String text = textMessage.getText();
-            System.out.println("Received: " + text);
+            Assert.assertEquals("The content from src/test/resources/testRFQ.xml should have the same as the content retrieved from the jms message", FileUtils.readFileToString(new File("./src/test/resources/testRFQ.xml"), "UTF-8"), text);
         } else {
-            System.out.println("Received: " + message);
+        	fail("message should have been a TextMessage");
         }
 
         consumer.close();
@@ -78,51 +81,11 @@ public class IntegrationRouteBuilderTest extends CamelTestSupport {
         connection.close();		
 	}
 
-	public static void main(String[] args) throws Exception {
-        try {
-
-            // Create a ConnectionFactory
-            ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61636");
-
-            // Create a Connection
-            Connection connection = connectionFactory.createConnection();
-            connection.start();
-
-
-            // Create a Session
-            Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-
-            // Create the destination (Topic or Queue)
-            Destination destination = session.createQueue("rfq");
-
-            // Create a MessageConsumer from the Session to the Topic or Queue
-            MessageConsumer consumer = session.createConsumer(destination);
-
-            // Wait for a message
-            Message message = consumer.receive(1000);
-
-            if (message instanceof TextMessage) {
-                TextMessage textMessage = (TextMessage) message;
-                String text = textMessage.getText();
-                System.out.println("Received: " + text);
-            } else {
-                System.out.println("Received: " + message);
-            }
-
-            consumer.close();
-            session.close();
-            connection.close();
-        } catch (Exception e) {
-            System.out.println("Caught: " + e);
-            e.printStackTrace();
-        }
-    }
-
 	
 	@Override
 	protected RouteBuilder[] createRouteBuilders() throws Exception {
 		addTestJmsComponent();
-		IntegrationRouteBuilder routeBuilder = new IntegrationRouteBuilder();
+		FileToJMSRouteBuilder routeBuilder = new FileToJMSRouteBuilder();
 		routeBuilder.setIncomingFileDirectory(folder.getRoot().getAbsolutePath());
 		return new RouteBuilder[] {  routeBuilder};
 	}
