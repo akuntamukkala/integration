@@ -12,12 +12,13 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<integration.scm.git.repo.root.path>/integration</integration.scm.git.repo.root.path>
 		<integration.scm.git.repo.project.path>/parent-pom</integration.scm.git.repo.project.path>
-
 		<integration.org.camel.version>2.10.4</integration.org.camel.version>
 		<integration.org.apache.activemq.version>5.7.0</integration.org.apache.activemq.version>
 		<integration.junit.version>4.11</integration.junit.version>
-		<log4j-version>1.2.16</log4j-version>
-		<slf4j-version>1.6.1</slf4j-version>
+		<integration.log4j-version>1.2.16</integration.log4j-version>
+		<integration.slf4j-version>1.6.1</integration.slf4j-version>
+		<integration.xmlunit>1.4</integration.xmlunit>
+		<integration.org.apache.commons>1.3.2</integration.org.apache.commons>
 	</properties>
 
 	<scm>

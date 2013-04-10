@@ -41,27 +41,45 @@
 		<property name="incomingFileDirectory" value="${incoming.file.directory}" />
 	</bean>
 
-	<bean id="jmsToSplitterToCBRRouteBuilder" class="com.vpn.integration.route.JMSToSplitterToCBRRouteBuilder">
-		
+	<bean id="jmsToSplitterToCBRRouteBuilder"
+		class="com.vpn.integration.route.JMSToSplitterToCBRRouteBuilder">
+
 	</bean>
 	<!-- This bean refers to the connection factory bean exposed by another 
 		bundle in an osgi container -->
 	<reference id="connectionFactory" interface="javax.jms.ConnectionFactory" />
 
+	<bean id="txManager"
+		class="org.springframework.jms.connection.JmsTransactionManager">
+		<property name="connectionFactory" ref="connectionFactory" />
+	</bean>
 
 	<bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
 		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="transactionManager" ref="txManager" />
+		<property name="transacted" value="true" />
+		<property name="transactedInOut" value="true" />
 	</bean>
 
 	<bean id="jms" class="org.apache.camel.component.jms.JmsComponent">
 		<argument ref="jmsConfig" />
 	</bean>
 
+	<bean id="required" class="org.apache.camel.spring.spi.SpringTransactionPolicy">
+		<property name="transactionManager" ref="txManager" />
+		<property name="propagationBehaviorName" value="PROPAGATION_REQUIRED" />
+	</bean>
+
+	<bean id="requires_new" class="org.apache.camel.spring.spi.SpringTransactionPolicy">
+		<property name="transactionManager" ref="txManager" />
+		<property name="propagationBehaviorName" value="PROPAGATION_REQUIRES_NEW" />
+	</bean>
+
 	<!-- This is the camel context in this route builder creates the route -->
-	<camelContext id="file2jms"
+	<camelContext id="context-handle-RFQ"
 		xmlns="http://camel.apache.org/schema/blueprint" autoStartup="true">
 		<routeBuilder ref="file2JMSRouteBuilder" />
-		<routeBuilder ref="jmsToSplitterToCBRRouteBuilder"/>
+		<routeBuilder ref="jmsToSplitterToCBRRouteBuilder" />
 	</camelContext>
 
 </blueprint>

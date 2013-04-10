@@ -1,7 +1,6 @@
 package com.vpn.integration.route;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 
 import javax.jms.Connection;
@@ -26,9 +25,9 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import com.vpn.integration.route.FileToJMSRouteBuilder;
 
-
-public class IntegrationRouteBuilderTest extends CamelTestSupport {
+public class FileToJMSRouteBuilderTest extends CamelTestSupport {
 
 	@EndpointInject(uri = "mock:received")
 	MockEndpoint received;
