@@ -9,6 +9,7 @@
 	<feature name="integration-feature" version="${pom.version}">
 		<feature name="integration-configuration-feature" version="${pom.version}" >integration-configuration-feature</feature>			
 		<feature name="integration-connection-feature" version="${pom.version}" >integration-connection-feature</feature>
+		<bundle>mvn:com.vpn/integration-file2jms/${pom.version}</bundle>
 	</feature>
 
 

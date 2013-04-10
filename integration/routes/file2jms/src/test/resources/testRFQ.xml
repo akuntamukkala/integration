@@ -1,0 +1,13 @@
+<rfq version="1.0.0">
+	<id>123456</id>
+	<books>
+		<item type="FICTION">
+			<isbn>TP</isbn>
+			<quantity>10</quantity>
+		</item>
+		<item type="DRAMA">
+			<isbn>SHMP</isbn>
+			<quantity>5</quantity>
+		</item>
+	</books>
+</rfq>

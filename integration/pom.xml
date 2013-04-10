@@ -56,5 +56,6 @@
 		<module>connection</module>
 		<module>connection-feature</module>
 		<module>feature</module>
+		<module>routes/file2jms</module>
 	</modules>
 </project>

@@ -13,6 +13,11 @@
 		<integration.scm.git.repo.root.path>/integration</integration.scm.git.repo.root.path>
 		<integration.scm.git.repo.project.path>/parent-pom</integration.scm.git.repo.project.path>
 
+		<integration.org.camel.version>2.10.4</integration.org.camel.version>
+		<integration.org.apache.activemq.version>5.7.0</integration.org.apache.activemq.version>
+		<integration.junit.version>4.11</integration.junit.version>
+		<log4j-version>1.2.16</log4j-version>
+		<slf4j-version>1.6.1</slf4j-version>
 	</properties>
 
 	<scm>
@@ -26,11 +31,11 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
+			<version>${integration.junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	
+
 	<packaging>pom</packaging>
 	<description>This is a place holder parent pom which may be used to specify dependencies, plugin etc</description>
 </project>
