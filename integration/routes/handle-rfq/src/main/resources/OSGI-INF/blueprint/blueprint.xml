@@ -31,7 +31,7 @@
 		persistent-id="IntegrationConfigSettings$[runtime.environment]"
 		update-strategy="reload">
 		<cm:default-properties>
-			<cm:property name="incoming.file.directory" value="${user.dir}" />
+			<cm:property name="incoming.file.directory" value="Incoming" />
 		</cm:default-properties>
 	</cm:property-placeholder>
 
