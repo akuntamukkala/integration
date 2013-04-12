@@ -66,6 +66,8 @@ public class FictionProcessor implements Processor {
 	@Override
 	public void process(Exchange exchange) throws Exception {
 
+		Thread.sleep(30000);
+		
 		String itemStr = (String) exchange.getIn().getBody();
 		Item item = (Item) xstream.fromXML(itemStr);
 		if (isbnPriceMap.get(item.getIsbn()) != null) {
@@ -84,7 +86,7 @@ public class FictionProcessor implements Processor {
 		xstream.useAttributeFor("type", String.class);
 		xstream.alias("item", Item.class);
 		exchange.getIn().setBody(xstream.toXML(item));
-//		exchange.getIn().setBody(item);
+
 	}
 
 

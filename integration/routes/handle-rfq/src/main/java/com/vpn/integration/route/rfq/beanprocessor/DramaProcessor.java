@@ -47,6 +47,8 @@ public class DramaProcessor implements Processor {
 	@Override
 	public void process(Exchange exchange) throws Exception {
 
+		Thread.sleep(30000);
+		
 		String itemStr = (String) exchange.getIn().getBody();
 		Item item = (Item) xstream.fromXML(itemStr);
 		if (isbnPriceMap.get(item.getIsbn()) != null) {

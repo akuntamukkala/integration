@@ -19,6 +19,7 @@ public class RFQResponseAggregationStrategy implements AggregationStrategy {
 	public Exchange aggregate(Exchange oldExchange, Exchange newExchange) {
 
 		if (oldExchange == null) {
+			
 			List<Item> items = new ArrayList<Item>();
 			XStream xstream = new XStream();
 			xstream.processAnnotations(Item.class);
@@ -30,6 +31,7 @@ public class RFQResponseAggregationStrategy implements AggregationStrategy {
 			xstream.processAnnotations(RFQ.class);
 			newExchange.getIn().setBody(xstream.toXML(rfq));
 			return newExchange;
+			
 		} else {
 
 			Message newIn = newExchange.getIn();

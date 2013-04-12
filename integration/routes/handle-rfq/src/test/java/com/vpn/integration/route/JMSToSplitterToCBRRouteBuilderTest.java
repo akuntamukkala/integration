@@ -31,21 +31,27 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.xml.sax.SAXException;
+import com.vpn.integration.route.FileToJMSRouteBuilder;
 
 public class JMSToSplitterToCBRRouteBuilderTest extends CamelTestSupport {
 
 	@Rule
 	public TemporaryFolder folder = new TemporaryFolder();
 
+	private File incoming;
+	private File outgoing;
+	
 	private ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
 			"vm://test-broker?broker.persistent=false");
 
 	@Before
 	@Override
 	public void setUp() throws Exception {
+		incoming = folder.newFolder("Incoming");
+		outgoing = folder.newFolder("Outgoing");
+		
 		FileUtils.copyFileToDirectory(new File(
-				"./src/test/resources/testRFQ.xml"), folder.getRoot()
-				.getAbsoluteFile());
+				"./src/test/resources/testRFQ.xml"), incoming.getAbsoluteFile());
 		super.setUp();
 	}
 
@@ -53,6 +59,7 @@ public class JMSToSplitterToCBRRouteBuilderTest extends CamelTestSupport {
 	public void test() throws InterruptedException {
 		Thread.sleep(300000);
 	}
+	
 /*	@Test
 	public void testFile2JMSRoute() throws InterruptedException, JMSException,
 			IOException, SAXException {
@@ -130,11 +137,10 @@ public class JMSToSplitterToCBRRouteBuilderTest extends CamelTestSupport {
 	protected RouteBuilder[] createRouteBuilders() throws Exception {
 		addTestJmsComponent();
 		FileToJMSRouteBuilder file2JmsRouteBuilder = new FileToJMSRouteBuilder();
-		file2JmsRouteBuilder.setIncomingFileDirectory(folder.getRoot()
-				.getAbsolutePath());
+		file2JmsRouteBuilder.setIncomingFileDirectory(incoming.getAbsolutePath());
 
 		JMSToSplitterToCBRRouteBuilder jmsToSplitterToCBRRouteBuilder = new JMSToSplitterToCBRRouteBuilder();
-
+		jmsToSplitterToCBRRouteBuilder.setOutputFileDirectory(outgoing.getAbsolutePath());
 		return new RouteBuilder[] { file2JmsRouteBuilder,
 				jmsToSplitterToCBRRouteBuilder };
 	}
