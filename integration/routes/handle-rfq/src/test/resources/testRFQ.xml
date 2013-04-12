@@ -2,11 +2,11 @@
 	<id>123456</id>
 	<books>
 		<item type="FICTION">
-			<isbn>TP</isbn>
+			<isbn>0486284727</isbn>
 			<quantity>10</quantity>
 		</item>
 		<item type="DRAMA">
-			<isbn>SHMP</isbn>
+			<isbn>0486272788</isbn>
 			<quantity>5</quantity>
 		</item>
 	</books>
