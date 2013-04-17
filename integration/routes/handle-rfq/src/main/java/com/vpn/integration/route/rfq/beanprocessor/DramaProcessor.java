@@ -2,13 +2,17 @@ package com.vpn.integration.route.rfq.beanprocessor;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.activemq.kaha.impl.index.BadMagicException;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 
 import com.thoughtworks.xstream.XStream;
+import com.vpn.integration.route.rfq.exception.BadMessageException;
+import com.vpn.integration.route.rfq.exception.EndpointUnavailableException;
 import com.vpn.integration.route.rfq.vo.Item;
 
 public class DramaProcessor implements Processor {
@@ -43,11 +47,16 @@ public class DramaProcessor implements Processor {
 												.divide(HUNDRED, RoundingMode.HALF_EVEN))).setScale(2, RoundingMode.HALF_EVEN);
 	}
 	
-
+	private static volatile int counter = 0;
 	@Override
 	public void process(Exchange exchange) throws Exception {
 
-		Thread.sleep(30000);
+		//Thread.sleep(30000);
+		
+//		System.out.println("XXX : " + ++counter + new Date() + " : XXX");
+//		if(true) {
+//			throw new EndpointUnavailableException();
+//		}
 		
 		String itemStr = (String) exchange.getIn().getBody();
 		Item item = (Item) xstream.fromXML(itemStr);

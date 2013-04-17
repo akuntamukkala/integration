@@ -32,6 +32,7 @@
 		update-strategy="reload">
 		<cm:default-properties>
 			<cm:property name="incoming.file.directory" value="Incoming" />
+			<cm:property name="outgoing.file.directory" value="Outgoing" />
 		</cm:default-properties>
 	</cm:property-placeholder>
 
@@ -43,7 +44,7 @@
 
 	<bean id="jmsToSplitterToCBRRouteBuilder"
 		class="com.vpn.integration.route.JMSToSplitterToCBRRouteBuilder">
-
+		<property name="outputFileDirectory" value="${outgoing.file.directory}" />
 	</bean>
 	<!-- This bean refers to the connection factory bean exposed by another 
 		bundle in an osgi container -->

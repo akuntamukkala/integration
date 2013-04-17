@@ -18,7 +18,7 @@ public class FileToJMSRouteBuilder extends RouteBuilder {
 	@Override
 	public void configure() throws Exception {
 
-		from("file://" + this.incomingFileDirectory + "?delay=60000").id("file->queue:rfq").setHeader("rfqId", XPathBuilder.xpath("//rfq/id/text()", String.class)).setHeader("version", XPathBuilder.xpath("//rfq/@version", String.class)).convertBodyTo(String.class, Charset.forName("UTF-8").name()).to("log:test")
+		from("file://" + this.incomingFileDirectory).id("file->queue:rfq").setHeader("rfqId", XPathBuilder.xpath("//rfq/id/text()", String.class)).setHeader("version", XPathBuilder.xpath("//rfq/@version", String.class)).convertBodyTo(String.class, Charset.forName("UTF-8").name()).to("log:test")
         .to("jms:rfq");
 	}
 

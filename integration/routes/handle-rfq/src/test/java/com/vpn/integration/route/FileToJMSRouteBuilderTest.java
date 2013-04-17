@@ -13,6 +13,7 @@ import javax.jms.Session;
 import javax.jms.TextMessage;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.broker.BrokerService;
 import org.apache.camel.EndpointInject;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.jms.JmsComponent;
@@ -20,6 +21,7 @@ import org.apache.camel.component.jms.JmsConfiguration;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.junit4.CamelTestSupport;
 import org.apache.commons.io.FileUtils;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -35,18 +37,49 @@ public class FileToJMSRouteBuilderTest extends CamelTestSupport {
 	@Rule
 	public TemporaryFolder folder = new TemporaryFolder();
 
+	private File incoming;
+
 	private ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
-			"vm://test-broker?broker.persistent=false");
+			"vm://test-broker?create=false&broker.persistent=false");
+	
+	private BrokerService broker = null;
+	
 	@Before
 	@Override
 	public void setUp() throws Exception {
-		FileUtils.copyFileToDirectory(new File("./src/test/resources/testRFQ.xml"), folder.getRoot().getAbsoluteFile());
+		
+		broker = new BrokerService();
+		broker.setBrokerName("test-broker");
+		broker.setPersistent(false);
+		broker.setUseJmx(false);
+		broker.start();
+		
+		incoming = folder.newFolder("Incoming");
 		super.setUp();
+		
+		
+		
+		
 	}
 	
+	
+	
+	@Override
+	@After
+	public void tearDown() throws Exception {
+		super.tearDown();
+		broker.stop();
+	}
+
+
+
 	@Test
 	public void testFile2JMSRoute() throws InterruptedException, JMSException, IOException {
 		
+
+		FileUtils.copyFileToDirectory(new File(
+				"./src/test/resources/testRFQ.xml"), incoming.getAbsoluteFile());
+		Thread.sleep(2000);
         // Create a Connection
         Connection connection = connectionFactory.createConnection();
         connection.start();
@@ -85,7 +118,7 @@ public class FileToJMSRouteBuilderTest extends CamelTestSupport {
 	protected RouteBuilder[] createRouteBuilders() throws Exception {
 		addTestJmsComponent();
 		FileToJMSRouteBuilder routeBuilder = new FileToJMSRouteBuilder();
-		routeBuilder.setIncomingFileDirectory(folder.getRoot().getAbsolutePath());
+		routeBuilder.setIncomingFileDirectory(incoming.getAbsolutePath());
 		return new RouteBuilder[] {  routeBuilder};
 	}
 
@@ -93,8 +126,6 @@ public class FileToJMSRouteBuilderTest extends CamelTestSupport {
 		
 		JmsConfiguration jmsConfig = new JmsConfiguration(connectionFactory);
 		JmsComponent component = new JmsComponent(jmsConfig);
-		
-		
 		context.addComponent("jms", component);
 		
 	}

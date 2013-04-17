@@ -41,6 +41,12 @@
 			<version>${integration.org.apache.activemq.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-camel</artifactId>
+			<version>${integration.org.apache.activemq.version}</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-jms</artifactId>
 			<version>${integration.org.camel.version}</version>
@@ -111,8 +117,9 @@
 				<configuration>
 					<instructions>
 						<Bundle-SymbolicName>handle-rfq</Bundle-SymbolicName>
-						<Private-Package>com.vpn.integration.route.*</Private-Package>
-						<Import-Package>*,org.apache.camel.osgi</Import-Package>
+						<Private-Package>com.vpn.integration.*</Private-Package>
+						<Import-Package>*,com.thoughtworks.xstream,com.thoughtworks.xstream.annotations;version="[1.4.4,2)",org.apache.camel.osgi</Import-Package>
+						<Export-Package/>
 					</instructions>
 				</configuration>
 			</plugin>
