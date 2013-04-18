@@ -33,9 +33,19 @@
 		<cm:default-properties>
 			<cm:property name="incoming.file.directory" value="Incoming" />
 			<cm:property name="outgoing.file.directory" value="Outgoing" />
+			<cm:property name="broker.url" value="tcp://localhost:9999"/>
+			<cm:property name="broker.connection.factory.pool.size" value="1"/>
 		</cm:default-properties>
 	</cm:property-placeholder>
 
+	<bean id="activemqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<property name="brokerURL" value="${broker.url}" />
+	</bean>
+
+	<bean id="connectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory">
+		<property name="maxConnections" value="${broker.connection.factory.pool.size}" />
+		<property name="connectionFactory" ref="activemqConnectionFactory" />
+	</bean>
 
 	<!-- This bean defines the routes -->
 	<bean id="file2JMSRouteBuilder" class="com.vpn.integration.route.FileToJMSRouteBuilder">
@@ -46,9 +56,7 @@
 		class="com.vpn.integration.route.JMSToSplitterToCBRRouteBuilder">
 		<property name="outputFileDirectory" value="${outgoing.file.directory}" />
 	</bean>
-	<!-- This bean refers to the connection factory bean exposed by another 
-		bundle in an osgi container -->
-	<reference id="connectionFactory" interface="javax.jms.ConnectionFactory" />
+	
 
 	<bean id="txManager"
 		class="org.springframework.jms.connection.JmsTransactionManager">

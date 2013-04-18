@@ -29,27 +29,32 @@
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-core</artifactId>
 			<version>${integration.org.camel.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-blueprint</artifactId>
 			<version>${integration.org.camel.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-core</artifactId>
 			<version>${integration.org.apache.activemq.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-camel</artifactId>
 			<version>${integration.org.apache.activemq.version}</version>
+			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-jms</artifactId>
 			<version>${integration.org.camel.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.camel</groupId>
@@ -62,36 +67,49 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>${integration.org.apache.commons}</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>${integration.log4j-version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>${integration.slf4j-version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>${integration.slf4j-version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>xmlunit</groupId>
 			<artifactId>xmlunit</artifactId>
 			<version>${integration.xmlunit}</version>
+			<scope>test</scope>
 		</dependency>
-
-
-
 		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>
 			<artifactId>xstream</artifactId>
-			<version>1.4.4</version>
+			<version>${integration.com.thoughtworks.xstream}</version>
+			<scope>compile</scope>
 		</dependency>
+<!-- 		<dependency>
+			<groupId>xmlpull</groupId>
+			<artifactId>xmlpull</artifactId>
+			<version>${integration.xmlpull}</version>
+		</dependency>
+		<dependency>
+			<groupId>xpp3</groupId>
+			<artifactId>xpp3_min</artifactId>
+			<version>${integration.xpp3}</version>
+		</dependency> -->
 	</dependencies>
 
 	<build>
@@ -112,14 +130,16 @@
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
-				<version>2.3.4</version>
+				<version>2.3.7</version>
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
 						<Bundle-SymbolicName>handle-rfq</Bundle-SymbolicName>
 						<Private-Package>com.vpn.integration.*</Private-Package>
-						<Import-Package>*,com.thoughtworks.xstream,com.thoughtworks.xstream.annotations;version="[1.4.4,2)",org.apache.camel.osgi</Import-Package>
-						<Export-Package/>
+						<Import-Package>*;resolution:=optional</Import-Package>
+						<Export-Package />
+						<Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
+						<Embed-Transitive>true</Embed-Transitive>
 					</instructions>
 				</configuration>
 			</plugin>
