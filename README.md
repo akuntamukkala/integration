@@ -1,11 +1,6 @@
 integration
 ===========
 
-This project is work in progress. 
+The objective of this project is to help create a reference implementation for Karaf feature containing common configuration for a few message routes implemented using Camel, Blueprint (for wiring the configuration/bundles) and ActiveMQ Broker.
 
-The objective of this project is to help create a reference implementation for Karaf feature containing common configuration for a few message routes implemented using Camel, Blueprint, CXF and ActiveMQ Broker.
-
-Karaf runtime enhanced with Camel/Blueprint and CXF runs the routes once this feature is deployed. This project is not using an embedded ActiveMQ in Karaf. The Karaf feature being developed in project provides a bundle that exports an ActiveMQ connection factory bean (configurable endpoint) which gets wired into other bundles that implement "routes" using Blueprint. 
-
-
-
+Karaf runtime enhanced with Camel/Blueprint/ActiveMQ runs the routes once the developed feature is deployed. 
