@@ -53,8 +53,6 @@
 	<modules>
 		<module>parent-pom</module>
 		<module>configuration-feature</module>
-		<!-- <module>connection</module>
-		<module>connection-feature</module> -->
 		<module>routes/handle-rfq</module>
 		<module>feature</module>
 	</modules>

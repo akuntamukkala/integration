@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <features name="integration-feature-${pom.version}">
 
-<!-- 	<repository>mvn:com.vpn/integration-connection-feature/${pom.version}/xml</repository>
- -->	<repository>mvn:com.vpn/integration-configuration-feature/${pom.version}/xml</repository>
+	<repository>mvn:com.vpn/integration-configuration-feature/${pom.version}/xml</repository>
 
 	<feature name="integration-feature" version="${pom.version}">
 		<feature name="integration-configuration-feature" version="${pom.version}" start-level="90">integration-configuration-feature</feature>			
-		<!-- <feature name="integration-connection-feature" version="${pom.version}">integration-connection-feature</feature> -->
 		<bundle start-level="100">mvn:com.vpn/integration-handle-rfq/${pom.version}</bundle>
 	</feature>
 

@@ -84,15 +84,16 @@ public class JMSToSplitterToCBRRouteBuilderTest extends CamelTestSupport {
 		FileUtils.copyFileToDirectory(new File(
 				"./src/test/resources/testRFQ.xml"), incoming.getAbsoluteFile());
 
-//		connectionFactory =  new ActiveMQConnectionFactory(
-//		"vm://test-broker?create=false&broker.persistent=false");
 		connectionFactory =  new ActiveMQConnectionFactory(
-				"tcp://localhost:61636");
+		"vm://test-broker?create=false&broker.persistent=false");
+//		connectionFactory =  new ActiveMQConnectionFactory(
+//				"tcp://localhost:61636");
 		RedeliveryPolicy cfRedeliveryPolicy = new RedeliveryPolicy();
 		cfRedeliveryPolicy.setInitialRedeliveryDelay(0);
 		cfRedeliveryPolicy.setRedeliveryDelay(10000);
 		cfRedeliveryPolicy.setUseExponentialBackOff(false);
 		cfRedeliveryPolicy.setMaximumRedeliveries(-1);
+		
 		((ActiveMQConnectionFactory)connectionFactory).getRedeliveryPolicyMap().put(new ActiveMQQueue(">"), cfRedeliveryPolicy);
 		
 		
