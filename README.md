@@ -52,6 +52,8 @@ The project uses split, content based routing, aggregation EIPs.
 
 This is a multi-module Maven project. 
 
+Unit tests verify the routes and use EasyMock to simulate exception scenarios. 
+
 To Do:
 
 Write Usage instructions :) 
