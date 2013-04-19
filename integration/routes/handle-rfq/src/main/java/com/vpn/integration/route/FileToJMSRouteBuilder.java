@@ -20,8 +20,6 @@ public class FileToJMSRouteBuilder extends RouteBuilder {
 	
 	@Override
 	public void configure() throws Exception {
-
-		//onException(SAXParseException.class).handled(true).convertBodyTo(String.class,"utf-8").to("file://" + this.malformedIncomingFileDirectory);
 		
 		from("file://" + this.incomingFileDirectory).id("file->queue:rfq")
 			.doTry()

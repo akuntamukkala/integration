@@ -58,13 +58,6 @@ public class RFQRuntimeExceptionTest extends CamelTestSupport {
 
 	private BrokerService broker = null;
 
-	public static void initialize() {
-
-	}
-
-	private static Logger log = LoggerFactory
-			.getLogger(RFQRuntimeExceptionTest.class);
-
 	@Before
 	@Override
 	public void setUp() throws Exception {
@@ -97,8 +90,7 @@ public class RFQRuntimeExceptionTest extends CamelTestSupport {
 						.getAbsoluteFile());
 
 		connectionFactory = new ActiveMQConnectionFactory(
-				"tcp://localhost:61636");
-		// "vm://test-broker?create=false&broker.persistent=false");
+				"vm://test-broker?create=false&broker.persistent=false");
 
 		RedeliveryPolicy cfRedeliveryPolicy = new RedeliveryPolicy();
 		cfRedeliveryPolicy.setInitialRedeliveryDelay(0);
@@ -126,13 +118,13 @@ public class RFQRuntimeExceptionTest extends CamelTestSupport {
 		Session session = connection.createSession(false,
 				Session.AUTO_ACKNOWLEDGE);
 
-		
 		try {
 			// Create the destination (Topic or Queue)
 			Queue unknownRuntimeExceptionDestination = session
 					.createQueue("unknown-runtime-exception");
 
-			QueueBrowser browser = session.createBrowser(unknownRuntimeExceptionDestination);
+			QueueBrowser browser = session
+					.createBrowser(unknownRuntimeExceptionDestination);
 			Assert.assertTrue(browser.getEnumeration().hasMoreElements());
 		} catch (Exception e) {
 			fail("Exception occurred : " + e.getMessage());
@@ -140,9 +132,7 @@ public class RFQRuntimeExceptionTest extends CamelTestSupport {
 			session.close();
 			connection.close();
 		}
-		
-		
-		
+
 	}
 
 	@Override

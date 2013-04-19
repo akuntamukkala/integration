@@ -21,8 +21,6 @@ public class JMSToSplitterToCBRRouteBuilder extends SpringRouteBuilder {
 
 		XPathBuilder xPathBuilder = new XPathBuilder("//rfq/books/item"); 
 		
-		JmsTransactionManager mgr = (JmsTransactionManager) getContext().getRegistry().lookup("txManager");
-
 		onException(RFQRuntimeException.class).handled(true).to("jms:unknown-runtime-exception");
 		
 		from("jms:rfq?consumer.prefetchSize=0")

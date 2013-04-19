@@ -43,30 +43,8 @@ public class FictionCategoryPriceCalculator implements Processor {
 												.divide(HUNDRED, RoundingMode.HALF_EVEN))).setScale(2, RoundingMode.HALF_EVEN);
 	}
 	
-	public static void main(String[] args) {
-		Item item = new Item();
-		item.setIsbn("0486284727");
-		item.setQuantity(new Integer(100));
-		item.setType("DRAMA");
-		//BigDecimal bd = new BigDecimal("100.34");
-//		bd.setScale(2, RoundingMode.HALF_EVEN);
-	//	System.out.println(bd);
-		//item.setCost(bd);
-		XStream xstream = new XStream();
-		xstream.useAttributeFor("type", String.class);
-		xstream.alias("item", Item.class);
-		System.out.println(xstream.toXML(item));
-		
-		item.setCost(getDiscountedCost(item, DISCOUNT_TIER1));
-		System.out.println(xstream.toXML(item));
-		
-		
-		
-	}
 	@Override
 	public void process(Exchange exchange) throws Exception {
-
-		//Thread.sleep(30000);
 		
 		String itemStr = (String) exchange.getIn().getBody();
 		Item item = (Item) xstream.fromXML(itemStr);

@@ -46,13 +46,6 @@ public class DramaCategoryPriceCalculator implements Processor {
 	private static volatile int counter = 0;
 	@Override
 	public void process(Exchange exchange) throws Exception {
-
-		//Thread.sleep(30000);
-		
-//		System.out.println("XXX : " + ++counter + new Date() + " : XXX");
-//		if(true) {
-//			throw new EndpointUnavailableException();
-//		}
 		
 		String itemStr = (String) exchange.getIn().getBody();
 		Item item = (Item) xstream.fromXML(itemStr);
@@ -72,7 +65,6 @@ public class DramaCategoryPriceCalculator implements Processor {
 		xstream.useAttributeFor("type", String.class);
 		xstream.alias("item", Item.class);
 		exchange.getIn().setBody(xstream.toXML(item));
-//		exchange.getIn().setBody(item);
 		
 	}
 }

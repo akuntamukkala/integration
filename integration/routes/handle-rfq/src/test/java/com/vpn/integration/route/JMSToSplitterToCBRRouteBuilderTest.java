@@ -21,6 +21,7 @@ import org.apache.commons.io.FileUtils;
 import org.custommonkey.xmlunit.DetailedDiff;
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.Difference;
+import org.custommonkey.xmlunit.XMLUnit;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -41,30 +42,24 @@ public class JMSToSplitterToCBRRouteBuilderTest extends CamelTestSupport {
 
 	private File incoming;
 	private File outgoing;
-	
-	private static ConnectionFactory connectionFactory = null;
-	
-	private BrokerService broker = null;
-	
-	public static void initialize() {
-		
-		
-	}
 
-	private static Logger log = LoggerFactory.getLogger(JMSToSplitterToCBRRouteBuilderTest.class);
+	private static ConnectionFactory connectionFactory = null;
+
+	private BrokerService broker = null;
+
+	private static Logger log = LoggerFactory
+			.getLogger(JMSToSplitterToCBRRouteBuilderTest.class);
 
 	@Before
 	@Override
 	public void setUp() throws Exception {
-		
+
 		broker = new BrokerService();
 		broker.setBrokerName("test-broker");
 		broker.setPersistent(false);
 		broker.setUseJmx(false);
 		broker.setSchedulerSupport(true);
 
-		
-		
 		RedeliveryPlugin redeliveryPlugin = new RedeliveryPlugin();
 		RedeliveryPolicy redeliveryPolicy = new RedeliveryPolicy();
 		redeliveryPolicy.setInitialRedeliveryDelay(2000);
@@ -80,25 +75,27 @@ public class JMSToSplitterToCBRRouteBuilderTest extends CamelTestSupport {
 
 		incoming = folder.newFolder("Incoming");
 		outgoing = folder.newFolder("Outgoing");
-		
-		FileUtils.copyFileToDirectory(new File(
-				"./src/test/resources/testRFQ.xml"), incoming.getAbsoluteFile());
 
-		connectionFactory =  new ActiveMQConnectionFactory(//"tcp://localhost:61636");
-		"vm://test-broker?create=false&broker.persistent=false");
+		FileUtils
+				.copyFileToDirectory(new File(
+						"./src/test/resources/testRFQ.xml"), incoming
+						.getAbsoluteFile());
+
+		connectionFactory = new ActiveMQConnectionFactory(
+				"vm://test-broker?create=false&broker.persistent=false");
 
 		RedeliveryPolicy cfRedeliveryPolicy = new RedeliveryPolicy();
 		cfRedeliveryPolicy.setInitialRedeliveryDelay(0);
 		cfRedeliveryPolicy.setRedeliveryDelay(10000);
 		cfRedeliveryPolicy.setUseExponentialBackOff(false);
 		cfRedeliveryPolicy.setMaximumRedeliveries(-1);
-		
-		((ActiveMQConnectionFactory)connectionFactory).getRedeliveryPolicyMap().put(new ActiveMQQueue(">"), cfRedeliveryPolicy);
-		
+
+		((ActiveMQConnectionFactory) connectionFactory)
+				.getRedeliveryPolicyMap().put(new ActiveMQQueue(">"),
+						cfRedeliveryPolicy);
 
 		super.setUp();
 
-	
 	}
 
 	@Test
@@ -107,67 +104,72 @@ public class JMSToSplitterToCBRRouteBuilderTest extends CamelTestSupport {
 		String expected = FileUtils.readFileToString(new File(
 				"./src/test/resources/123456-output.xml"), "UTF-8");
 
-		String actual = FileUtils.readFileToString(new File(outgoing.getAbsolutePath() + File.separator + "123456-output.xml"), "UTF-8");
+		String actual = FileUtils.readFileToString(
+				new File(outgoing.getAbsolutePath() + File.separator
+						+ "123456-output.xml"), "UTF-8");
+		XMLUnit.setIgnoreWhitespace(true);
 		Diff diff = new Diff(expected, actual);
-		if(!diff.identical()) {
+		if (!diff.identical()) {
 			log.error("The expected RFQ does not match actual. Listing the differences...");
 			DetailedDiff detailedDiff = new DetailedDiff(diff);
-			for(Object difference : detailedDiff.getAllDifferences()) {
-				log.info(((Difference)difference).getDescription());
+			for (Object difference : detailedDiff.getAllDifferences()) {
+				log.info(((Difference) difference).getDescription());
 			}
 			fail("The expected resultant RFQ does not match actual");
 		}
-		//Thread.sleep(3000000);
 	}
-	
 
 	@Override
 	protected RouteBuilder[] createRouteBuilders() throws Exception {
 		addTestJmsComponent();
-		
+
 		FileToJMSRouteBuilder file2JmsRouteBuilder = new FileToJMSRouteBuilder();
-		file2JmsRouteBuilder.setIncomingFileDirectory(incoming.getAbsolutePath());
-		
+		file2JmsRouteBuilder.setIncomingFileDirectory(incoming
+				.getAbsolutePath());
+
 		JMSToSplitterToCBRRouteBuilder jmsToSplitterToCBRRouteBuilder = new JMSToSplitterToCBRRouteBuilder();
-		jmsToSplitterToCBRRouteBuilder.setOutputFileDirectory(outgoing.getAbsolutePath());
-		jmsToSplitterToCBRRouteBuilder.setDramaCategoryPriceCalculator(new DramaCategoryPriceCalculator());
-		jmsToSplitterToCBRRouteBuilder.setFictionCategoryPriceCalculator(new FictionCategoryPriceCalculator());
-		
+		jmsToSplitterToCBRRouteBuilder.setOutputFileDirectory(outgoing
+				.getAbsolutePath());
+		jmsToSplitterToCBRRouteBuilder
+				.setDramaCategoryPriceCalculator(new DramaCategoryPriceCalculator());
+		jmsToSplitterToCBRRouteBuilder
+				.setFictionCategoryPriceCalculator(new FictionCategoryPriceCalculator());
+
 		return new RouteBuilder[] { file2JmsRouteBuilder,
 				jmsToSplitterToCBRRouteBuilder };
 	}
 
 	@Override
-    protected JndiRegistry createRegistry() throws Exception {
-        JndiRegistry reg = super.createRegistry();
-                
-        
-        org.springframework.jms.connection.JmsTransactionManager transactionManager = new org.springframework.jms.connection.JmsTransactionManager();
-		transactionManager.setConnectionFactory(connectionFactory);
-		reg.bind("txManager", transactionManager);
-        
-        SpringTransactionPolicy txPolicy = new SpringTransactionPolicy();
-        txPolicy.setTransactionManager(transactionManager);
-        txPolicy.setPropagationBehaviorName("PROPAGATION_REQUIRED");
-        reg.bind("required", txPolicy);
-        
-        return reg;
-    }
-	
-	private void addTestJmsComponent() {
-		
+	protected JndiRegistry createRegistry() throws Exception {
+		JndiRegistry reg = super.createRegistry();
+
 		org.springframework.jms.connection.JmsTransactionManager transactionManager = new org.springframework.jms.connection.JmsTransactionManager();
 		transactionManager.setConnectionFactory(connectionFactory);
-		
+		reg.bind("txManager", transactionManager);
+
+		SpringTransactionPolicy txPolicy = new SpringTransactionPolicy();
+		txPolicy.setTransactionManager(transactionManager);
+		txPolicy.setPropagationBehaviorName("PROPAGATION_REQUIRED");
+		reg.bind("required", txPolicy);
+
+		return reg;
+	}
+
+	private void addTestJmsComponent() {
+
+		org.springframework.jms.connection.JmsTransactionManager transactionManager = new org.springframework.jms.connection.JmsTransactionManager();
+		transactionManager.setConnectionFactory(connectionFactory);
+
 		ActiveMQComponent c = new ActiveMQComponent();
 		c.setConnectionFactory(connectionFactory);
 		c.setTransacted(true);
-		
-	    c.setTransactionManager((JmsTransactionManager)context.getRegistry().lookup("txManager"));
+
+		c.setTransactionManager((JmsTransactionManager) context.getRegistry()
+				.lookup("txManager"));
 		context.addComponent("jms", c);
 
 	}
-	
+
 	@Override
 	@After
 	public void tearDown() throws Exception {

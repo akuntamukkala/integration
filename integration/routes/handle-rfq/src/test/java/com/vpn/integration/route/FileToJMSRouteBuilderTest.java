@@ -40,8 +40,8 @@ public class FileToJMSRouteBuilderTest extends CamelTestSupport {
 	private File incoming;
 	private File malformedInputFolder;
 
-	private ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61636");
-//			"vm://test-broker?create=false&broker.persistent=false");
+	private ConnectionFactory connectionFactory = new ActiveMQConnectionFactory( 
+		"vm://test-broker?create=false&broker.persistent=false");
 	
 	private BrokerService broker = null;
 	

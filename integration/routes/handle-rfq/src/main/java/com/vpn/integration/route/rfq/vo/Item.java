@@ -36,20 +36,6 @@ public class Item {
 	public void setType(String type) {
 		this.type = type;
 	}
-	
-	public static void main(String[] args) {
-		Item item = new Item();
-		item.setIsbn("werwerwr");
-		item.setQuantity(new Integer(10));
-		item.setType("DRAMA");
-		BigDecimal bd = new BigDecimal("100.34");
-		item.setCost(bd);
-		XStream xstream = new XStream();
-		xstream.processAnnotations(Item.class);
-//		xstream.useAttributeFor("type", String.class);
-//		xstream.alias("item", Item.class);
-		System.out.println(xstream.toXML(item));
-	}
 	public BigDecimal getCost() {
 		return cost;
 	}
