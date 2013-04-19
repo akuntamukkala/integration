@@ -107,7 +107,7 @@ public class JMSToSplitterToCBRRouteBuilderTest extends CamelTestSupport {
 
 	@Test
 	public void test() throws InterruptedException, IOException, SAXException {
-		Thread.sleep(2000);
+		Thread.sleep(5000);
 		String expected = FileUtils.readFileToString(new File(
 				"./src/test/resources/123456-output.xml"), "UTF-8");
 
