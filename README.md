@@ -12,6 +12,8 @@ The usecase is as follows:
 3. The aggregated response contains the price per category of books
 
 Sample Request:
+<textarea rows="20" cols="40" style="border:none;">
+    <?xml version="1.0" encoding="ISO-8859-1"?>
 <rfq version="1.0.0">
   <id>123456</id>
 	<books>
@@ -25,7 +27,7 @@ Sample Request:
 		</item>
 	</books>
 </rfq>
-
+</textarea>
 Expected Response:
 <rfq version="1.0.0">
   <id>123456</id>
