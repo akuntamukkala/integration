@@ -1,4 +1,7 @@
 .classpath
 .project
 .settings/
+log
+.log
+activemq-data
 target/
