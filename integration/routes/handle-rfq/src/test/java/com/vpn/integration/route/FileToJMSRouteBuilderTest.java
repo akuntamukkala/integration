@@ -38,9 +38,10 @@ public class FileToJMSRouteBuilderTest extends CamelTestSupport {
 	public TemporaryFolder folder = new TemporaryFolder();
 
 	private File incoming;
+	private File malformedInputFolder;
 
-	private ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
-			"vm://test-broker?create=false&broker.persistent=false");
+	private ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61636");
+//			"vm://test-broker?create=false&broker.persistent=false");
 	
 	private BrokerService broker = null;
 	
@@ -55,10 +56,9 @@ public class FileToJMSRouteBuilderTest extends CamelTestSupport {
 		broker.start();
 		
 		incoming = folder.newFolder("Incoming");
+		malformedInputFolder = folder.newFolder("MalformedInput");
 		super.setUp();
-		
-		
-		
+
 		
 	}
 	
@@ -114,11 +114,24 @@ public class FileToJMSRouteBuilderTest extends CamelTestSupport {
 	}
 
 	
+	@Test
+	public void testMalformedXMLInput() throws Exception {	
+		FileUtils.copyFileToDirectory(new File(
+				"./src/test/resources/malformedRFQ.xml"), incoming.getAbsoluteFile());
+		Thread.sleep(2000);	
+		String actual = FileUtils.readFileToString(new File(malformedInputFolder.getAbsolutePath() + File.separator + "malformedRFQ.xml"), "UTF-8");
+		Assert.assertNotNull("Input file containing malformed xml not found in malformed input folder", actual);
+		Assert.assertEquals(FileUtils.readFileToString(new File("./src/test/resources/malformedRFQ.xml"), "utf-8"), actual);	
+	}
+	
+	
 	@Override
 	protected RouteBuilder[] createRouteBuilders() throws Exception {
 		addTestJmsComponent();
 		FileToJMSRouteBuilder routeBuilder = new FileToJMSRouteBuilder();
 		routeBuilder.setIncomingFileDirectory(incoming.getAbsolutePath());
+		routeBuilder.setMalformedIncomingFileDirectory(malformedInputFolder.getAbsolutePath());
+		
 		return new RouteBuilder[] {  routeBuilder};
 	}
 

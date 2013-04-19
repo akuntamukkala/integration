@@ -1,38 +1,20 @@
 package com.vpn.integration.route;
 
-import java.io.File;
-
-import org.apache.camel.Exchange;
-import org.apache.camel.ExchangePattern;
-import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.Processor;
 import org.apache.camel.builder.xml.XPathBuilder;
-import org.apache.camel.component.file.FileComponent;
-import org.apache.camel.model.RedeliveryPolicyDefinition;
-import org.apache.camel.processor.RedeliveryPolicy;
 import org.apache.camel.spring.SpringRouteBuilder;
-import org.apache.camel.spring.spi.TransactionErrorHandler;
 import org.springframework.jms.connection.JmsTransactionManager;
 
 import com.vpn.integration.route.rfq.aggregation.RFQResponseAggregationStrategy;
-import com.vpn.integration.route.rfq.beanprocessor.DramaProcessor;
-import com.vpn.integration.route.rfq.beanprocessor.FictionProcessor;
-import com.vpn.integration.route.rfq.beanprocessor.FinalOutputProcessor;
 import com.vpn.integration.route.rfq.beanprocessor.RedeliveryDelayProcessor;
-import com.vpn.integration.route.rfq.exception.BadMessageException;
-import com.vpn.integration.route.rfq.exception.EndpointUnavailableException;
 import com.vpn.integration.route.rfq.exception.RFQRuntimeException;
 
 public class JMSToSplitterToCBRRouteBuilder extends SpringRouteBuilder {
 
 	private String outputFileDirectory;
+	private Processor dramaCategoryPriceCalculator;
+	private Processor fictionCategoryPriceCalculator;
 	
-	public String getOutputFileDirectory() {
-		return outputFileDirectory;
-	}
-
-	public void setOutputFileDirectory(String outputFileDirectory) {
-		this.outputFileDirectory = outputFileDirectory;
-	}
 
 	@Override
 	public void configure() throws Exception {
@@ -41,16 +23,7 @@ public class JMSToSplitterToCBRRouteBuilder extends SpringRouteBuilder {
 		
 		JmsTransactionManager mgr = (JmsTransactionManager) getContext().getRegistry().lookup("txManager");
 
-		onException(BadMessageException.class).handled(true).to("jms:bad-msg-format");
-		
-//		RedeliveryPolicyDefinition unlmtdRtry = new RedeliveryPolicyDefinition();
-//		unlmtdRtry.setMaximumRedeliveries("-1");
-//		unlmtdRtry.setRedeliveryDelay("10000");
-//		unlmtdRtry.setUseExponentialBackOff("false");
-		
-		//errorHandler(transactionErrorHandler(mgr).maximumRedeliveries(-1).redeliveryDelay(10000));
-		
-		//onException(EndpointUnavailableException.class).handled(false).maximumRedeliveries(-1).redeliveryDelay(10000).log("Exception Occurred"); //.setRedeliveryPolicy(unlmtdRtry);
+		onException(RFQRuntimeException.class).handled(true).to("jms:unknown-runtime-exception");
 		
 		from("jms:rfq?consumer.prefetchSize=0")
 				.id("queue:rfq->split->cbr->queue:[DRAMA|FICTION]")
@@ -65,9 +38,36 @@ public class JMSToSplitterToCBRRouteBuilder extends SpringRouteBuilder {
 		from("direct:cbr").setHeader("itemType",
 				XPathBuilder.xpath("//item/@type", String.class))
 		.choice()
-			.when(header("itemType").isEqualTo("FICTION")).convertBodyTo(String.class).process(new FictionProcessor())
-			.when(header("itemType").isEqualTo("DRAMA")).convertBodyTo(String.class).process(new DramaProcessor())
+			.when(header("itemType").isEqualTo("FICTION")).convertBodyTo(String.class).process(this.fictionCategoryPriceCalculator)
+			.when(header("itemType").isEqualTo("DRAMA")).convertBodyTo(String.class).process(this.dramaCategoryPriceCalculator)
 			.otherwise().to("jms:UnknownType");
 		
+	}
+
+	public String getOutputFileDirectory() {
+		return outputFileDirectory;
+	}
+
+	public void setOutputFileDirectory(String outputFileDirectory) {
+		this.outputFileDirectory = outputFileDirectory;
+	}
+	
+	
+	public Processor getDramaCategoryPriceCalculator() {
+		return dramaCategoryPriceCalculator;
+	}
+
+	public void setDramaCategoryPriceCalculator(
+			Processor dramaCategoryPriceCalculator) {
+		this.dramaCategoryPriceCalculator = dramaCategoryPriceCalculator;
+	}
+
+	public Processor getFictionCategoryPriceCalculator() {
+		return fictionCategoryPriceCalculator;
+	}
+
+	public void setFictionCategoryPriceCalculator(
+			Processor fictionCategoryPriceCalculator) {
+		this.fictionCategoryPriceCalculator = fictionCategoryPriceCalculator;
 	}
 }

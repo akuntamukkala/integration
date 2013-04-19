@@ -33,6 +33,7 @@
 		<cm:default-properties>
 			<cm:property name="incoming.file.directory" value="Incoming" />
 			<cm:property name="outgoing.file.directory" value="Outgoing" />
+			<cm:property name="malformed.incoming.file.directory" value="MalformedInput"/>
 			<cm:property name="broker.url" value="tcp://localhost:9999"/>
 			<cm:property name="broker.connection.factory.pool.size" value="1"/>
 		</cm:default-properties>
@@ -50,11 +51,19 @@
 	<!-- This bean defines the routes -->
 	<bean id="file2JMSRouteBuilder" class="com.vpn.integration.route.FileToJMSRouteBuilder">
 		<property name="incomingFileDirectory" value="${incoming.file.directory}" />
+		<property name="malformedIncomingFileDirectory" value="${malformed.incoming.file.directory}"/>
 	</bean>
 
+	<bean id="dramaCategoryPriceCalculator" class="com.vpn.integration.route.rfq.beanprocessor.DramaCategoryPriceCalculator"/>
+	
+	<bean id="fictionCategoryPriceCalculator" class="com.vpn.integration.route.rfq.beanprocessor.FictionCategoryPriceCalculator"/>
+	
+	
 	<bean id="jmsToSplitterToCBRRouteBuilder"
 		class="com.vpn.integration.route.JMSToSplitterToCBRRouteBuilder">
 		<property name="outputFileDirectory" value="${outgoing.file.directory}" />
+		<property name="dramaCategoryPriceCalculator" ref="dramaCategoryPriceCalculator"/>
+		<property name="fictionCategoryPriceCalculator" ref="fictionCategoryPriceCalculator"/>
 	</bean>
 	
 

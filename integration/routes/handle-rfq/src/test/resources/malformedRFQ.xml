@@ -1,0 +1,14 @@
+<rfq version="1.0.0">
+	<id>123456</id>
+	<books>
+		<item type="FICTION">
+			<isbn>0486284727</isbn>
+			<quantity>10</quantity>
+			<malformedXMlTag>
+		</item>
+		<item type="DRAMA">
+			<isbn>0486272788</isbn>
+			<quantity>5</quantity>
+		</item>
+	</books>
+</rfq>
