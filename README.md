@@ -1,7 +1,7 @@
 integration
 ===========
 
-The objective of this project is to help create a reference implementation for Karaf feature containing common configuration for a few message routes implemented using Camel, Blueprint (for wiring the configuration/bundles) and ActiveMQ Broker.
+The objective of this project is to help create a simple reference implementation for Karaf feature containing common configuration for a few message routes implemented using Camel, Blueprint (for wiring the configuration/bundles) and ActiveMQ Broker for educational purposes only. 
 
 Karaf runtime enhanced with Camel/Blueprint/ActiveMQ runs the routes once the developed feature is deployed. 
 
@@ -56,4 +56,4 @@ Unit tests verify the routes and use EasyMock to simulate exception scenarios.
 
 To Do:
 
-Write Usage instructions :) 
+Write Usage instructions and video demonstrating how to run the Camel Routes in Karaf 
