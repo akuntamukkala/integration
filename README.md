@@ -5,6 +5,12 @@ The objective of this project is to help create a simple reference implementatio
 
 Karaf runtime enhanced with Camel/Blueprint/ActiveMQ runs the routes once the developed feature is deployed. 
 
+Software Versions:
+1. Karaf version 2.3.1
+2. Camel version 2.10.4
+3. Xml <-> Java using XStream version 1.4.4
+4. ActiveMQ version 5.7.0
+
 The usecase is as follows:
 
 1. Retrieve request for quote for certain categories of books.
