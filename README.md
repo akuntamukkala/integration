@@ -5,21 +5,21 @@ The objective of this project is to help create a simple reference implementatio
 
 Karaf runtime enhanced with Camel/Blueprint/ActiveMQ runs the routes once the developed feature is deployed. 
 
-Software Versions:
-
+## Software Versions:
 
 1. Karaf version 2.3.1
 2. Camel version 2.10.4
 3. Xml <-> Java using XStream version 1.4.4
 4. ActiveMQ version 5.7.0
 
-The usecase is as follows:
+## Use case:
 
 1. Retrieve request for quote for certain categories of books.
 2. Tiered pricing based on volume purchase
 3. The aggregated response contains the price per category of books
 
-Sample Request:
+## Sample Request:
+
 ```
 <rfq version="1.0.0">
 	<id>123456</id>
@@ -37,7 +37,7 @@ Sample Request:
 
 ```
 
-Expected Response:
+## Expected Response:
 
 ```
 <rfq version="1.0.0">
@@ -56,10 +56,20 @@ Expected Response:
 	</books>
 </rfq>
 ```
+
 The project uses split, content based routing, aggregation EIPs.
 
 This is a multi-module Maven project. 
 
+```
+	
+* integration-root
+	* parent-pom			# contains project specific properties
+	* configuration-feature	# exposes settings to be imported by the routes per environment (DEV,SIT,PROD)
+	* routes/handle-rfq		# camel routes	
+	* feature				# karaf feature that ties configuration & route bundles together to be deployed
+		
+```		
 Unit tests verify the routes and use EasyMock to simulate exception scenarios. 
 
 To Do:
