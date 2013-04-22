@@ -11,6 +11,12 @@ import org.apache.camel.Processor;
 import com.thoughtworks.xstream.XStream;
 import com.vpn.integration.route.rfq.vo.Item;
 
+/**
+ * Simple tiered discount calculator
+ * 
+ * @author AKUNTAMU
+ *
+ */
 public class FictionCategoryPriceCalculator implements Processor {
 
 	private static XStream xstream = new XStream();

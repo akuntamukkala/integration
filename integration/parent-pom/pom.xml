@@ -23,6 +23,16 @@
 		<integration.xmlpull>1.1.3.1</integration.xmlpull>
 		<integration.xpp3>1.1.4c</integration.xpp3>
 		<integration.easymock>3.1</integration.easymock>
+
+
+		<integration.maven-install-plugin.version>2.4</integration.maven-install-plugin.version>
+		<integration.maven-resources-plugin.version>2.6</integration.maven-resources-plugin.version>
+		<integration.build-helper-maven-plugin.version>1.7</integration.build-helper-maven-plugin.version>
+		<integration.maven-compiler-plugin.version>3.1</integration.maven-compiler-plugin.version>
+		<integration.maven-surefire-plugin.version>2.12.4</integration.maven-surefire-plugin.version>
+		<integration.maven-bundle-plugin.version>2.3.7</integration.maven-bundle-plugin.version>
+		<integration.maven-release-plugin.version>2.4.1</integration.maven-release-plugin.version>
+
 	</properties>
 
 	<scm>
@@ -43,6 +53,14 @@
 
 	<packaging>pom</packaging>
 	<description>This is a place holder parent pom which may be used to specify dependencies, plugin etc</description>
-
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${integration.maven-surefire-plugin.version}</version>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>

@@ -11,6 +11,12 @@ import org.apache.camel.Processor;
 import com.thoughtworks.xstream.XStream;
 import com.vpn.integration.route.rfq.vo.Item;
 
+/**
+ * Simple tiered discount calculator 
+ * 
+ * @author AKUNTAMU
+ *
+ */
 public class DramaCategoryPriceCalculator implements Processor {
 
 	private static XStream xstream = new XStream();
@@ -43,7 +49,6 @@ public class DramaCategoryPriceCalculator implements Processor {
 												.divide(HUNDRED, RoundingMode.HALF_EVEN))).setScale(2, RoundingMode.HALF_EVEN);
 	}
 	
-	private static volatile int counter = 0;
 	@Override
 	public void process(Exchange exchange) throws Exception {
 		

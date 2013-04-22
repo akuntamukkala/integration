@@ -3,7 +3,6 @@ package com.vpn.integration.route;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.xml.XPathBuilder;
 import org.apache.camel.spring.SpringRouteBuilder;
-import org.springframework.jms.connection.JmsTransactionManager;
 
 import com.vpn.integration.route.rfq.aggregation.RFQResponseAggregationStrategy;
 import com.vpn.integration.route.rfq.beanprocessor.RedeliveryDelayProcessor;

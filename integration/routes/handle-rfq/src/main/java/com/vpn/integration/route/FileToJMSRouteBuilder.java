@@ -1,12 +1,10 @@
 package com.vpn.integration.route;
 
 import java.nio.charset.Charset;
-import java.util.List;
 
 import org.apache.camel.ValidationException;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.builder.xml.XPathBuilder;
-import org.xml.sax.SAXParseException;
 
 public class FileToJMSRouteBuilder extends RouteBuilder {
 
@@ -23,7 +21,7 @@ public class FileToJMSRouteBuilder extends RouteBuilder {
 		
 		from("file://" + this.incomingFileDirectory).id("file->queue:rfq")
 			.doTry()
-				.to("validator:rfq.xsd?useDom=true")
+				.to("validator:rfq.xsd?useDom=true") //tried with useDom=false but results in unresolved error 
 				.to("direct:validinput")
 			.doCatch(ValidationException.class)
 				.log("Malformed XML input")

@@ -41,6 +41,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
+				<version>${integration.maven-resources-plugin.version}</version>
 				<executions>
 					<execution>
 						<id>filter</id>
@@ -54,6 +55,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>${integration.build-helper-maven-plugin.version}</version>
 				<executions>
 					<execution>
 						<id>attach-artifacts</id>
@@ -86,11 +88,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<!-- <build> <plugins> <plugin> <groupId>org.apache.karaf.tooling</groupId> 
-		<artifactId>features-maven-plugin</artifactId> <version>2.3.1</version> <executions> 
-		<execution> <id>generate-features-file</id> <goals> <goal>generate-features-file</goal> 
-		</goals> <configuration> <karafVersion>2.3.1</karafVersion> </configuration> 
-		</execution> </executions> </plugin> </plugins> </build> -->
-
 </project>
