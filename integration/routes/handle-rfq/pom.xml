@@ -66,7 +66,7 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>${integration.org.apache.commons}</version>
+			<version>${integration.org.apache.commons.version}</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -91,19 +91,19 @@
 		<dependency>
 			<groupId>xmlunit</groupId>
 			<artifactId>xmlunit</artifactId>
-			<version>${integration.xmlunit}</version>
+			<version>${integration.xmlunit.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>
 			<artifactId>xstream</artifactId>
-			<version>${integration.com.thoughtworks.xstream}</version>
+			<version>${integration.com.thoughtworks.xstream.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.easymock</groupId>
 			<artifactId>easymock</artifactId>
-			<version>${integration.easymock}</version>
+			<version>${integration.easymock.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
